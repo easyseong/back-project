@@ -17,6 +17,7 @@ public class MssqlRestDao {
 
     /* test 조회 */
     public List<Map> selectList(Object param) {
+
         return sqlSession.selectList("com.tbUser.select1", param);
     }
 

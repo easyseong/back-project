@@ -19,7 +19,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    private static final String[] SWAGGER_URI = {
+            "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**", "/swagger/**"
+    };
+    private static final String[] PUBLIC_URI = {
+            "/*/signin", "/*/signin/**", "/*/signup", "/*/signup/**"
+    };
+    private static final String[] PUBLIC_GET_URI = {
+            "/exception/**", "/helloworld/**", "/actuator/health"
+    };
+
+
 
     @Bean
     @Override
@@ -38,22 +50,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/*/signup", "/*/login").permitAll()
+                .antMatchers(PUBLIC_URI).permitAll()
+                .antMatchers(HttpMethod.GET, PUBLIC_GET_URI).permitAll()
                 .anyRequest().hasRole("USER")
-
-//
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(customAuthenticationEntryPoint)
-//                .accessDeniedHandler(customAccessDeniedHandler)
-
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler()) // 인증 오류 발생 시 처리를 위한 핸들러 추가
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // 인증 오류 발생 시 처리를 위한 핸들러 추가
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣어라.
+
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
-                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/h2-console/**");
+        web.ignoring().antMatchers(SWAGGER_URI);
     }
 }

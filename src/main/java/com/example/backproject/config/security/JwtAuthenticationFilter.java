@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
-    private final JwtProvider jwtProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     // request 로 들어오는 Jwt 의 유효성을 검증 - JwtProvider.validationToken() 을 필터로서 FilterChain 에 추가
@@ -27,15 +27,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                          FilterChain filterChain) throws IOException, ServletException {
 
         // request 에서 token 을 취한다.
-        String token = jwtProvider.resolveToken((HttpServletRequest) request);
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
-        // 검증
-        log.info("[Verifying token]");
-        log.info(((HttpServletRequest) request).getRequestURL().toString());
 
-        if (token != null && jwtProvider.validationToken(token)) {
-            Authentication authentication = jwtProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            Authentication auth = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(request, response);
     }

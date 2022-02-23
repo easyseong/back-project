@@ -1,4 +1,7 @@
 package com.example.backproject.service;
 
-public class SignService {
+import com.example.backproject.entity.User;
+
+public interface SignService {
+    public User getUser(Object param);
 }

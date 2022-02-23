@@ -1,4 +1,4 @@
-package com.example.backproject.controller.v1;
+package com.example.backproject.controller;
 
 import com.example.backproject.advice.exception.CEmailSigninFailedException;
 import com.example.backproject.entity.User;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/home")
 public class SignController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
