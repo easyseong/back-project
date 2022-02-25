@@ -1,7 +1,10 @@
 package com.example.backproject.service;
 
-import com.example.backproject.entity.User;
+import com.example.backproject.model.Member;
+
+import java.util.List;
 
 public interface SignService {
-    public User getUser(Object param);
+
+    public List<Member> selectEmail();
 }
