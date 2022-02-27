@@ -7,11 +7,30 @@
 <mapper namespace="com.example.backproject.dao.MemberDao">
 
 
+    <select id="selectList" >
+        SELECT *
+        FROM MEMBERS
+    </select>
+
     <select id="selectEmail" resultType="com.example.backproject.model.Member">
         SELECT *
           FROM MEMBERS
          WHERE EMAIL = #{EMAIL}
     </select>
+
+    <select id="readMember" resultType="com.example.backproject.model.Member">
+        SELECT *
+        FROM MEMBERS
+        WHERE EMAIL = #{EMAIL}
+    </select>
+
+    <insert id="create">
+        INSERT INTO MEMBERS (ID, EMAIL, PASSWORD)
+        VALUES (MEMBERS_SE.NEXTVAL, #{email}, #{password})
+    </insert>
+
+
+
 
 
 </mapper>

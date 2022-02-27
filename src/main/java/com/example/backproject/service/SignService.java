@@ -6,5 +6,11 @@ import java.util.List;
 
 public interface SignService {
 
-    public List<Member> selectEmail();
+    public List<Member> selectList();
+
+    public List<Member> selectEmail(String email);
+
+    public Member readMember(String email);
+
+    public void create(String email, String password);
 }
