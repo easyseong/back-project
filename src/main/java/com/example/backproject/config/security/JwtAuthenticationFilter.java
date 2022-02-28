@@ -18,9 +18,9 @@ public class JwtAuthenticationFilter extends GenericFilter { //발급받은토�
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
-        if (token != null && jwtTokenProvider.validateTokenExpiration(token)) {
+        if (token != null && jwtTokenProvider.validateTokenExpiration(token)) { // .validateToken을 통해 토큰 유효성검사
             Authentication auth = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            SecurityContextHolder.getContext().setAuthentication(auth); //유효한사용자임을 Security에게 알려줌
         }
 
         chain.doFilter(request, response);

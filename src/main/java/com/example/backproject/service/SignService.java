@@ -12,5 +12,5 @@ public interface SignService {
 
     public Member readMember(String email);
 
-    public void create(String email, String password);
+    public void create(Member user);
 }

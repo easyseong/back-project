@@ -43,8 +43,8 @@ public class SignServiceImpl implements SignService {
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .build();
         log.info("받아온 member객체 : "+user);
-        create(user.getEmail(), user.getPassword());
-        log.info("create함수 실행 됨");
+        create(user);
+        log.info("create 실행 됨");
 
         return new MemberRegisterResponseDto(user.getId(), user.getEmail()); // 멤버가 쿼리로 저장된 후에 반환된 member객체는 MemberRegisterResponseDto.class 에 담긴다. 왜담지? 굳이 아이디랑 이메일을?
     }
@@ -56,7 +56,7 @@ public class SignServiceImpl implements SignService {
     public void validateDuplicated(String email) {
         if (! selectEmail(email).isEmpty()) {
             log.info("중복된 아이디 : "+selectEmail(email));
-            throw new MemberEmailAlreadyExistsException(); //예외클래스 작성
+            throw new MemberEmailAlreadyExistsException();
         }
 
     }
@@ -68,12 +68,13 @@ public class SignServiceImpl implements SignService {
 
         Member member = readMember(requestDto.getEmail());
         if(member == null) {
+            log.info("email 존재하지 않음");
             throw new LoginFailureException();
         }
 
         if (!passwordEncoder.matches(requestDto.getPassword(), member.getPassword())) //요청dto의 비번과 가져온 멤버정보의 비번 비교
             throw new LoginFailureException();
-        return new MemberLoginResponseDto(member.getId(), jwtTokenProvider.createToken(requestDto.getEmail())); // !!여기가 토큰 발급 구간 프론트에 넘겨주어 헤더에 토큰을 담음
+        return new MemberLoginResponseDto(member.getId(), jwtTokenProvider.createToken(requestDto.getEmail())); // !!여기가 토큰 발급 구간 프론트에 넘겨주어 헤더에 id, token 담음
 
     }
 
@@ -93,9 +94,9 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public void create(String email, String password) {
-            log.info("create함수 호출 : email= "+email+" password = "+password);
-            memberDao.create(email, password);
+    public void create(Member user) {
+            log.info("create함수 호출 : email= "+user.getEmail()+" password = "+user.getPassword());
+            memberDao.create(user);
         //return readMember(email); //갓 만든 유저의 이메일을 어떻게 받아오지? 멤버객체랑 이베일을 같이 보내버려
     }
 
