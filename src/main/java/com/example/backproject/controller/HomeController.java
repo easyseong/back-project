@@ -21,10 +21,10 @@ public class HomeController {
     public final MemberDao memberDao;
 
 
-    @GetMapping("/")
-    public List<Member> hello() {
+    @GetMapping("/hello")
+    public String hello() {
         log.info("hello.......................................................");
-        return memberDao.selectList();
+        return "Hello";
     }
 
 }
