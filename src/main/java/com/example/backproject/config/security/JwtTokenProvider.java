@@ -3,6 +3,7 @@ package com.example.backproject.config.security;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider { //Access Token을 발행
@@ -31,20 +33,27 @@ public class JwtTokenProvider { //Access Token을 발행
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String email) { //토큰을 생성
-        Claims claims = Jwts.claims().setSubject(email); //토큰의 Subject는 중복되지 않는 값인 email로 지정
+
+    //토큰을 생성
+    public String createToken(String email) {
+        Claims claims = Jwts.claims().setSubject(email); //payload에 저장되는 토큰단위. 토큰의 Subject는 중복되지 않는 값인 email로 지정
         Date now = new Date();
 
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now) //토큰의 만료시간은 지금부터
+                .setClaims(claims) //정보저장
+                .setIssuedAt(now) //토큰발행 시간 정보
                 .setExpiration(new Date(now.getTime() + tokenValidTime)) //30분동안
                 .signWith(SignatureAlgorithm.HS256, secretKey) // 서명의 알고리즘은 HS256, 키는 지정값 사용
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) { //토큰으로 인증 객체를 끌고옴
-        UserDetails userDetails = memberDetailsService.loadUserByUsername(getMemberEmail(token));
+
+    //JWT토큰에서 인증 정보 조회회
+   public Authentication getAuthentication(String token) { //토큰으로 인증 객체를 끌고옴
+        log.info("getAuthentication-token : "+token);
+        log.info("userDetails : "+getMemberEmail(token));
+        UserDetails userDetails = memberDetailsService.loadUserByUsername(getMemberEmail(token)); //여기!!!!!!!!
+        log.info("getAuthentication 실행됨 : "+userDetails );
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -58,7 +67,7 @@ public class JwtTokenProvider { //Access Token을 발행
 
     public String resolveToken(HttpServletRequest req) { //HTTP 헤더에 저장돼있는토큰을 사용하기 위해 꺼내옴
         return req.getHeader("X-AUTH-TOKEN");
-    }
+    } //헤더에서 토큰을 가져옴
 
     public boolean validateTokenExpiration(String token) {
         try {

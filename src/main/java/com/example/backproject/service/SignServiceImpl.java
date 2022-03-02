@@ -24,8 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SignServiceImpl implements SignService {
 
-    @Autowired
-    MemberDao memberDao;
+
+    private final MemberDao memberDao;
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -36,22 +36,21 @@ public class SignServiceImpl implements SignService {
     @Transactional
     public MemberRegisterResponseDto registerMember(MemberRegisterRequestDto requestDto) { // MemberRegisterRequestDto.class 작성
         validateDuplicated(requestDto.getEmail()); //아이디 중복 확인, 존재하면 예외를 던진다
+
         //중복이 아니라면 db에 저장
 
         Member user = Member.builder()
                 .email(requestDto.getEmail())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .build();
-        log.info("받아온 member객체 : "+user);
         create(user);
-        log.info("create 실행 됨");
+        log.info("create ............................................ : "+user);
 
         return new MemberRegisterResponseDto(user.getId(), user.getEmail()); // 멤버가 쿼리로 저장된 후에 반환된 member객체는 MemberRegisterResponseDto.class 에 담긴다. 왜담지? 굳이 아이디랑 이메일을?
     }
 
     /**
      * Unique한 값을 가져야하나, 중복된 값을 가질 경우를 검증, 아이디 중복 확인
-     * @param email
      */
     public void validateDuplicated(String email) {
         if (! selectEmail(email).isEmpty()) {

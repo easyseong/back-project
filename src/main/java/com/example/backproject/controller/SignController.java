@@ -28,7 +28,7 @@ public class SignController {
     public SingleResult<MemberRegisterResponseDto> register(@RequestBody MemberRegisterRequestDto requestDto) {
         log.info("requestDto :  "+requestDto);
         MemberRegisterResponseDto responseDto = signServiceImpl.registerMember(requestDto);
-        log.info("responseDto :  "+responseDto); //id값 안가져올 듯
+        log.info("responseDto :  "+responseDto);
         return responseService.getSingleResult(responseDto);
     }
 

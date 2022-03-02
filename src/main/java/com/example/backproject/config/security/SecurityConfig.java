@@ -24,18 +24,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable() // rest api이므로 기본설정 미사용
                 .csrf().disable() // rest api이므로 csrf 보안 미사용
-                .formLogin().disable()
+                .formLogin().disable()//로그인페이지 미사용
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt로 인증하므로 세션 미사용
                 .and()
+
                 .authorizeRequests()
+                .antMatchers("/main").permitAll()
                 .antMatchers("/sign/**").permitAll()
-                .antMatchers("/social/**").permitAll()
                 .antMatchers("/exception/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //인증필요페이지접근시 예외
                 .and()
-                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())//권한필요페이지 예외
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // jwt 필터 추가
     }
