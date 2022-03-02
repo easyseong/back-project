@@ -5,6 +5,7 @@ import com.example.backproject.model.Member;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface MemberDao { //DAO, 데이터에 직접적으로 접근
