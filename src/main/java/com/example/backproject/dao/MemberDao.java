@@ -14,7 +14,7 @@ public interface MemberDao { //DAO, 데이터에 직접적으로 접근
 
     public List<Member> selectEmail(String email);
 
-    public Member readMember(String email);
+    public Optional<Member> readMember(String email);
 
     public void create(Member user);
 

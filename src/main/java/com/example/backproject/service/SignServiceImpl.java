@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -64,7 +65,7 @@ public class SignServiceImpl implements SignService {
     public MemberLoginResponseDto loginMember(MemberLoginRequestDto requestDto) {
         //Member member = memberRepository.findByEmail(requestDto.getEmail()).orElseThrow(LoginFailureException::new); //orElseThrow => 값이 없으면 예외를 던져줌
 
-        Member member = readMember(requestDto.getEmail());
+        Member member = readMember(requestDto.getEmail()).orElseThrow(LoginFailureException::new);
         if(member == null) {
             log.info("email 존재하지 않음");
             throw new LoginFailureException();
@@ -87,7 +88,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public Member readMember(String email) {
+    public Optional<Member> readMember(String email) {
         return memberDao.readMember(email);
     }
 
