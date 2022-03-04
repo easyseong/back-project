@@ -1,4 +1,4 @@
-package com.example.backproject.config.security;
+package com.example.backproject.config.security.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;

@@ -7,7 +7,7 @@
 <mapper namespace="com.example.backproject.dao.MemberDao">
 
 
-    <select id="selectList" >
+    <select id="selectList" parameterType="com.example.backproject.model.Member" resultType="com.example.backproject.model.Member">
         SELECT *
         FROM MEMBERS
     </select>

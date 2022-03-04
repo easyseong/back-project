@@ -2,7 +2,7 @@ package com.example.backproject.service;
 
 import com.example.backproject.advice.exception.LoginFailureException;
 import com.example.backproject.advice.exception.MemberEmailAlreadyExistsException;
-import com.example.backproject.config.security.JwtTokenProvider;
+import com.example.backproject.config.security.jwt.JwtTokenProvider;
 import com.example.backproject.dao.MemberDao;
 import com.example.backproject.dto.MemberLoginRequestDto;
 import com.example.backproject.dto.MemberLoginResponseDto;
@@ -41,7 +41,7 @@ public class SignServiceImpl implements SignService {
 
         Member user = Member.builder()
                 .email(requestDto.getEmail())
-                .password(passwordEncoder.encode(requestDto.getPassword()))
+                .password(passwordEncoder.encode(requestDto.getPassword())) //디비저장 되기 전에 인코딩하여 보안성을 증진
                 .build();
         create(user);
         log.info("create ............................................ : "+user);

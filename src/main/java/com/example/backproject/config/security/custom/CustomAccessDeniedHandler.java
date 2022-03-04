@@ -1,4 +1,4 @@
-package com.example.backproject.config.security;
+package com.example.backproject.config.security.custom;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

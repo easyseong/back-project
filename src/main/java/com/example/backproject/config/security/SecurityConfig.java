@@ -1,15 +1,14 @@
 package com.example.backproject.config.security;
 
+import com.example.backproject.config.security.custom.CustomAccessDeniedHandler;
+import com.example.backproject.config.security.custom.CustomAuthenticationEntryPoint;
+import com.example.backproject.config.security.jwt.JwtAuthenticationFilter;
+import com.example.backproject.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -29,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/main").permitAll()
                 .antMatchers("/sign/**").permitAll()
                 .antMatchers("/exception/**").permitAll()

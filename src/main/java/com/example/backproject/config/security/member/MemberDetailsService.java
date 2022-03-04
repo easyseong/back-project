@@ -1,4 +1,4 @@
-package com.example.backproject.config.security;
+package com.example.backproject.config.security.member;
 
 import com.example.backproject.advice.exception.MemberNotFoundException;
 import com.example.backproject.config.security.member.MemberDetails;

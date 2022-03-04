@@ -1,12 +1,9 @@
-package com.example.backproject.domain.service;
+package com.example.backproject.service;
 
-import com.example.backproject.domain.result.Result;
-import com.example.backproject.domain.result.SingleResult;
+import com.example.backproject.result.Result;
+import com.example.backproject.result.SingleResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

@@ -1,4 +1,4 @@
-package com.example.backproject.domain.result;
+package com.example.backproject.result;
 
 import lombok.Getter;
 import lombok.Setter;
