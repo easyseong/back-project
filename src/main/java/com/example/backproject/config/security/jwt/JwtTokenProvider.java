@@ -19,7 +19,7 @@ import java.util.Date;
 @Log4j2
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider { //Access Token을 발행
+public class JwtTokenProvider { //Access Token을 발행하고 검증하는 역할 수행
 
     @Value("${spring.jwt.secretKey}")
     private String secretKey;
@@ -34,7 +34,7 @@ public class JwtTokenProvider { //Access Token을 발행
     }
 
 
-    //토큰을 생성
+    //토큰을 생성 !!!!!!!!!!!!!!!!!
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email); //payload에 저장되는 토큰단위. 토큰의 Subject는 중복되지 않는 값인 email로 지정
         Date now = new Date();
@@ -52,8 +52,8 @@ public class JwtTokenProvider { //Access Token을 발행
    public Authentication getAuthentication(String token) { //토큰으로 인증 객체를 끌고옴
         log.info("getAuthentication-token : "+token);
         log.info("userDetails : "+getMemberEmail(token));
-        UserDetails userDetails = memberDetailsService.loadUserByUsername(getMemberEmail(token)); //여기!!!!!!!!
-        log.info("getAuthentication 실행됨 : "+userDetails );
+        UserDetails userDetails = memberDetailsService.loadUserByUsername(getMemberEmail(token)); //디비에서 얻어온 user정보를 받음
+
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

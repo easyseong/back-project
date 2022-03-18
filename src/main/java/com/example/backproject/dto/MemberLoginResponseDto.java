@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberLoginResponseDto {
     private Long id;
-    private String token;
+    private String token; //로그인때마다 생성되는 토큰
 
 }

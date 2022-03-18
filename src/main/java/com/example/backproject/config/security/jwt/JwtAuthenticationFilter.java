@@ -16,12 +16,12 @@ public class JwtAuthenticationFilter extends GenericFilter { //발급받은토�
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request); //req.getHeader("X-AUTH-TOKEN"), 헤더의 X-AUTH-TOKEN값 가져옴
         log.info("token............... :"+token);
 
         if (token != null && jwtTokenProvider.validateTokenExpiration(token)) { // .validateToken을 통해 토큰 유효성검사, 여길 못타나 ? ㄴㄴ탐
             Authentication auth = jwtTokenProvider.getAuthentication(token);
-            log.info("auth............... :"+auth);
+            log.info("auth............... :"+auth); //접근할때마다 바뀜 걍 객체가 새로 만들어져서 그런듯
             SecurityContextHolder.getContext().setAuthentication(auth); //유효한사용자임을 Security에게 알려줌
         }
         log.info("request : "+request+", response : "+response);

@@ -17,7 +17,7 @@ public class MemberDetailsService implements UserDetailsService {
     private final MemberDao memberDao;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException { //db에서 userdetail을 얻어와 authenticationManager에게 제공
         Member member = memberDao.readMember(email).orElseThrow(MemberNotFoundException::new); //예외추가
 
         return MemberDetails.builder()

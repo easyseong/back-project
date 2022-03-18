@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sign")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:4200")
 public class SignController {
 
     private final SignServiceImpl signServiceImpl;
@@ -30,8 +30,10 @@ public class SignController {
     }
 
     @PostMapping("/login")
-    public SingleResult<MemberLoginResponseDto> login(@RequestBody MemberLoginRequestDto requestDto) {
-        MemberLoginResponseDto responseDto = signServiceImpl.loginMember(requestDto);
-        return responseService.getSingleResult(responseDto);
+    public SingleResult<MemberLoginResponseDto> login(@RequestBody MemberLoginRequestDto requestDto) { //바디에 email, password 입력
+        MemberLoginResponseDto responseDto = signServiceImpl.loginMember(requestDto); //id, 로그인 동시에 발급된 token
+        SingleResult<MemberLoginResponseDto> result = responseService.getSingleResult(responseDto);
+        log.info("MemberLoginResponseDto : " + result); //결과: com.example.backproject.result.SingleResult@4e6de22b
+        return result;
     }
 }
