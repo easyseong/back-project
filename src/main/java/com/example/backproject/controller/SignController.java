@@ -23,10 +23,18 @@ public class SignController {
 
     @PostMapping("/register") //등록, create
     public SingleResult<MemberRegisterResponseDto> register(@RequestBody MemberRegisterRequestDto requestDto) {
-        log.info("requestDto :  "+requestDto);
+        //log.info("requestDto :  "+requestDto);
         MemberRegisterResponseDto responseDto = signServiceImpl.registerMember(requestDto);
-        log.info("responseDto :  "+responseDto);
+        //log.info("responseDto :  "+responseDto);
         return responseService.getSingleResult(responseDto);
+    }
+
+
+    @PostMapping("/duplicated") //이메일 중복 확인
+    public void checkDuplicated (@RequestBody MemberRegisterRequestDto requestDto) { //제이슨아니고 text로 전송해야함 "test@test"=>X
+        log.info("checkDuplicated===================="+requestDto.getEmail());
+        signServiceImpl.validateDuplicated(requestDto.getEmail());
+
     }
 
     @PostMapping("/login")

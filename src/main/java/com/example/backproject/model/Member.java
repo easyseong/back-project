@@ -7,6 +7,10 @@ import lombok.Data;
 @Builder
 public class Member {
     private Long id;
+    private String username;
     private String email;
     private String password;
+    private String phonenumber;
+    private String address;
+
 }

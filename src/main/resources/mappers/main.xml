@@ -25,8 +25,8 @@
     </select>
 
     <insert id="create">
-        INSERT INTO MEMBERS (ID, EMAIL, PASSWORD)
-        VALUES (MEMBERS_SE.NEXTVAL, #{email}, #{password})
+        INSERT INTO MEMBERS (id, USERNAME, email, PASSWORD, PHONENUMBER, ADDRESS)
+        VALUES (MEMBERS_SE.NEXTVAL,#{username}, #{email}, #{password},#{phonenumber}, #{address})
     </insert>
 
 

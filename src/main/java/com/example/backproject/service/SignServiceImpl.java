@@ -40,8 +40,11 @@ public class SignServiceImpl implements SignService {
         //중복이 아니라면 db에 저장
 
         Member user = Member.builder()
+                .username(requestDto.getUsername())
                 .email(requestDto.getEmail())
                 .password(passwordEncoder.encode(requestDto.getPassword())) //디비저장 되기 전에 인코딩하여 보안성을 증진
+                .phonenumber(requestDto.getPhonenumber())
+                .address(requestDto.getAddress())
                 .build();
         create(user);
         log.info("create ............................................ : "+user);
@@ -52,13 +55,31 @@ public class SignServiceImpl implements SignService {
     /**
      * Unique한 값을 가져야하나, 중복된 값을 가질 경우를 검증, 아이디 중복 확인
      */
+    @Transactional
     public void validateDuplicated(String email) {
+        log.info(email);
+        log.info("확인::::"+selectEmail(email));
         if (! selectEmail(email).isEmpty()) {
             log.info("중복된 아이디 : "+selectEmail(email));
             throw new MemberEmailAlreadyExistsException();
         }
+        else {
+            log.info("사용가능 한 아이디");
+        }
 
     }
+
+//    public boolean validateDuplicated(String email) {
+//        log.info(email);
+//        log.info("확인::::"+selectEmail(email));
+//        if (! selectEmail(email).isEmpty()) {
+//            log.info("중복된 아이디 : "+selectEmail(email));
+//            return false;
+//        }else {
+//            return true;
+//        }
+//
+//    }
 
 
     //로그인, 입력한 비번이 틀리면 예외발생 아니라면 jwt토큰 발행
@@ -94,9 +115,9 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public void create(Member user) {
-            log.info("create함수 호출 : email= "+user.getEmail()+" password = "+user.getPassword());
+            log.info("create함수 호출 : "+user);
             memberDao.create(user);
-        //return readMember(email); //갓 만든 유저의 이메일을 어떻게 받아오지? 멤버객체랑 이베일을 같이 보내버려
+
     }
 
 
